@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fa;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .details-container {
+            max-width: 650px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h2 { color: #172554; margin-bottom: 25px; }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail span { color: #64748b; }
+        .detail strong { color: #172554; text-align: right; }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 22px;
+            background: #172554;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="details-container">
+
+    <h2>Health Insurance Details</h2>
+
+    <div class="detail">
+        <span>Policy Number</span>
+        <strong>{{ policy.policy_number }}</strong>
+    </div>
+
+    <div class="detail">
+        <span>Policy Type</span>
+        <strong>{{ policy.get_policy_type_display }}</strong>
+    </div>
+
+    <div class="detail">
+        <span>Coverage Amount</span>
+        <strong>₹{{ policy.coverage_amount|floatformat:2 }}</strong>
+    </div>
+
+    <div class="detail">
+        <span>Renewal Date</span>
+        <strong>{{ policy.renewal_date|date:"d M Y" }}</strong>
+    </div>
+
+    <div class="detail">
+        <span>Policy Status</span>
+        <strong>{{ policy.get_status_display }}</strong>
+    </div>
+
+    <a href="{% url 'dashboard' %}" class="back-button">
+        Back to Dashboard
+    </a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Dashboard</title>
+      <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6fa;
+        }
+
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #172554;
+            color: white;
+            padding: 25px 15px;
+            position: fixed;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #dbeafe;
+            text-decoration: none;
+            padding: 14px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #172554;
+        }
+
+        .profile {
+            background: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+        }
+
+        .section-title {
+            color: #172554;
+            margin-bottom: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 5px 18px rgba(0,0,0,0.10);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-header h3 {
+            color: #172554;
+            font-size: 18px;
+        }
+
+        .card-icon {
+            font-size: 25px;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .approved {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .amount {
+            font-size: 26px;
+            color: #172554;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card-type {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .details {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
+        }
+
+        .details p {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 13px;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .details strong {
+            color: #172554;
+            text-align: right;
+        }
+
+        @media (max-width: 1000px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .sidebar {
+                width: 75px;
+                padding: 15px 5px;
+            }
+
+            .sidebar h2 {
+                font-size: 12px;
+            }
+
+            .sidebar a {
+                font-size: 11px;
+                text-align: center;
+                padding: 12px 3px;
+            }
+
+            .main {
+                margin-left: 75px;
+                padding: 15px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+       
+</head>
+<body>
+     <!-- Sidebar -->
+    <div class="sidebar">
+
+        <h2>🏦 MyBank</h2>
+
+        <a href="/" class="active">📊 Dashboard</a>
+        <a href="#">👥 Customers</a>
+        <a href="#">💳 Accounts</a>
+        <a href="#">💰 Deposits</a>
+        <a href="#">💸 Withdrawals</a>
+        <a href="#">🔄 Fund Transfer</a>
+        <a href="#">📜 Transactions</a>
+        <a href="#">🚪 Logout</a>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <div class="header">
+            <h1>Banking Dashboard</h1>
+
+            <div class="profile">
+                Welcome, Admin 👋
+            </div>
+        </div>
+
+        <h2 class="section-title">My Banking Services</h2>
+
+        <div class="cards">
+
+              {% for account in savings_accounts %}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">🏦</span>
+            <span class="status active">{{ account.get_status_display }}</span>
+        </div>
+
+        <h3>Savings Account</h3>
+        <p class="amount">₹{{ account.balance|floatformat:2 }}</p>
+        <p class="card-type">{{ account.get_account_type_display }}</p>
+
+        <div class="details">
+            <p>Interest Rate <strong>{{ account.interest_rate }}% p.a.</strong></p>
+            <p>Account Number <strong>XXXX {{ account.account_number|slice:"-4:" }}</strong></p>
+            <p>Status <strong>{{ account.get_status_display }}</strong></p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <h3>Savings Account</h3>
+        <p class="card-type">No savings account available.</p>
+    </div>
+    {% endfor %}
+
+
+    <!-- Current Account -->
+    {% for account in current_accounts %}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">🏢</span>
+            <span class="status active">{{ account.get_status_display }}</span>
+        </div>
+
+        <h3>Current Account</h3>
+        <p class="amount">₹{{ account.balance|floatformat:2 }}</p>
+        <p class="card-type">{{ account.get_account_type_display }}</p>
+
+        <div class="details">
+            <p>Interest Rate <strong>{{ account.interest_rate }}% p.a.</strong></p>
+            <p>Account Number <strong>XXXX {{ account.account_number|slice:"-4:" }}</strong></p>
+            <p>Status <strong>{{ account.get_status_display }}</strong></p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <h3>Current Account</h3>
+        <p class="card-type">No current account available.</p>
+    </div>
+    {% endfor %}
+
+
+    <!-- Loans -->
+    {% for loan in loans %}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">💰</span>
+            <span class="status approved">{{ loan.get_status_display }}</span>
+        </div>
+
+        <h3>Loan</h3>
+        <p class="amount">₹{{ loan.sanctioned_amount|floatformat:2 }}</p>
+        <p class="card-type">{{ loan.get_loan_type_display }}</p>
+
+        <div class="details">
+            <p>Interest Rate <strong>{{ loan.interest_rate }}% p.a.</strong></p>
+            <p>Outstanding <strong>₹{{ loan.outstanding_amount|floatformat:2 }}</strong></p>
+            <p>Next Due Date
+                <strong>
+                    {% if loan.next_due_date %}
+                        {{ loan.next_due_date|date:"d M Y" }}
+                    {% else %}
+                        Not available
+                    {% endif %}
+                </strong>
+            </p>
+            <p>Status <strong>{{ loan.get_status_display }}</strong></p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <h3>Loan</h3>
+        <p class="card-type">No loan records available.</p>
+    </div>
+    {% endfor %}
+
+
+    <!-- Credit Cards -->
+    {% for card in credit_cards %}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">💳</span>
+            <span class="status active">{{ card.get_status_display }}</span>
+        </div>
+
+        <h3>Credit Card</h3>
+        <p class="amount">₹{{ card.available_credit|floatformat:2 }}</p>
+        <p class="card-type">{{ card.card_variant }}</p>
+
+        <div class="details">
+            <p>Card Number <strong>XXXX {{ card.last_four_digits }}</strong></p>
+            <p>Credit Limit <strong>₹{{ card.credit_limit|floatformat:2 }}</strong></p>
+            <p>Used Credit <strong>₹{{ card.used_credit|floatformat:2 }}</strong></p>
+            <p>Available Limit <strong>₹{{ card.available_credit|floatformat:2 }}</strong></p>
+            <p>Payment Due
+                <strong>
+                    {% if card.payment_due_date %}
+                        {{ card.payment_due_date|date:"d M Y" }}
+                    {% else %}
+                        Not available
+                    {% endif %}
+                </strong>
+            </p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <h3>Credit Card</h3>
+        <p class="card-type">No credit card available.</p>
+    </div>
+    {% endfor %}
+
+
+    <!-- Debit Cards -->
+    {% for card in debit_cards %}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">💳</span>
+            <span class="status active">{{ card.get_status_display }}</span>
+        </div>
+
+        <h3>Debit Card</h3>
+        <p class="amount">₹{{ card.available_today|floatformat:2 }}</p>
+        <p class="card-type">{{ card.card_variant }}</p>
+
+        <div class="details">
+            <p>Card Number <strong>XXXX {{ card.last_four_digits }}</strong></p>
+            <p>Daily Limit <strong>₹{{ card.daily_limit|floatformat:2 }}</strong></p>
+            <p>Used Today <strong>₹{{ card.used_today|floatformat:2 }}</strong></p>
+            <p>Available Today <strong>₹{{ card.available_today|floatformat:2 }}</strong></p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <h3>Debit Card</h3>
+        <p class="card-type">No debit card available.</p>
+    </div>
+    {% endfor %}
+
+
+    <!-- Health Insurance -->
+    {% for policy in insurances %}
+    <div class="card">
+        <div class="card-header">
+            <span class="card-icon">❤️</span>
+            <span class="status active">{{ policy.get_status_display }}</span>
+        </div>
+
+        <h3>Health Insurance</h3>
+        <p class="amount">₹{{ policy.coverage_amount|floatformat:2 }}</p>
+        <p class="card-type">{{ policy.get_policy_type_display }}</p>
+
+        <div class="details">
+            <p>Policy Number <strong>{{ policy.policy_number }}</strong></p>
+            <p>Coverage <strong>₹{{ policy.coverage_amount|floatformat:2 }}</strong></p>
+            <p>Status <strong>{{ policy.get_status_display }}</strong></p>
+            <p>Renewal Date <strong>{{ policy.renewal_date|date:"d M Y" }}</strong></p>
+        </div>
+    </div>
+    {% empty %}
+    <div class="card">
+        <h3>Health Insurance</h3>
+        <p class="card-type">No insurance policy available.</p>
+    </div>
+    {% endfor %}
+
+</div>
+</div>
+
+</body>
+</body>
+</html>
