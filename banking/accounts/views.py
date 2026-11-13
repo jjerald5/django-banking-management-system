@@ -1,21 +1,17 @@
+
 from django.shortcuts import render, get_object_or_404
-#from django.contrib.auth.decorators import login_required
 
 from .models import BankAccount, Loan, BankCard, HealthInsurance
 
-# Create your views here.
-def dashboard(request):
-    if request.user.is_staff:
-        accounts = BankAccount.objects.all()
-        loans = Loan.objects.all()
-        cards = BankCard.objects.all()
-        insurances = HealthInsurance.objects.all()
 
-    else:
-        accounts = BankAccount.objects.filter(customer=request.user)
-        loans = Loan.objects.filter(customer=request.user)
-        cards = BankCard.objects.filter(customer=request.user)
-        insurances = HealthInsurance.objects.filter(customer=request.user)
+# Dashboard
+
+def dashboard(request):
+
+    accounts = BankAccount.objects.all()
+    loans = Loan.objects.all()
+    cards = BankCard.objects.all()
+    insurances = HealthInsurance.objects.all()
 
     context = {
         'savings_accounts': accounts.filter(account_type='savings'),
@@ -31,6 +27,9 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', context)
 
+
+
+# Account Details
 def account_details(request, account_id):
 
     if request.user.is_staff:
@@ -45,10 +44,12 @@ def account_details(request, account_id):
             customer=request.user
         )
 
-    return render(request,
+    return render(
+        request,
         'account_details.html',
         {'account': account}
     )
+
 
 # Loan Details
 

@@ -1,0 +1,6 @@
+db.sqlite3
+/staticfiles/
+/media/
+.env
+__pycache__/
+*.py[cod]

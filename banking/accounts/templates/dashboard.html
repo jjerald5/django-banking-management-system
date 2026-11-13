@@ -281,7 +281,8 @@
 
     <!-- Loans -->
     {% for loan in loans %}
-    <div class="card">
+    <div class="card" onclick="window.location.href='{% url 'loan_details' loan.id %}'"
+     style="cursor: pointer;">
         <div class="card-header">
             <span class="card-icon">💰</span>
             <span class="status approved">{{ loan.get_status_display }}</span>
@@ -316,7 +317,8 @@
 
     <!-- Credit Cards -->
     {% for card in credit_cards %}
-    <div class="card">
+    <div class="card" onclick="window.location.href='{% url 'card_details' card.id %}'"
+     style="cursor: pointer;">
         <div class="card-header">
             <span class="card-icon">💳</span>
             <span class="status active">{{ card.get_status_display }}</span>
@@ -352,7 +354,8 @@
 
     <!-- Debit Cards -->
     {% for card in debit_cards %}
-    <div class="card">
+    <div class="card" onclick="window.location.href='{% url 'card_details' card.id %}'"
+     style="cursor: pointer;">
         <div class="card-header">
             <span class="card-icon">💳</span>
             <span class="status active">{{ card.get_status_display }}</span>
@@ -379,7 +382,8 @@
 
     <!-- Health Insurance -->
     {% for policy in insurances %}
-    <div class="card">
+    <div class="card" onclick="window.location.href='{% url 'insurance_details' policy.id %}'"
+     style="cursor: pointer;">
         <div class="card-header">
             <span class="card-icon">❤️</span>
             <span class="status active">{{ policy.get_status_display }}</span>
